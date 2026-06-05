@@ -43,6 +43,63 @@ Food Loss Database (FAO)
 ```
 
 ---
+---
+
+# 📁 Struktur Repository
+
+```text
+Kelompok-8-SDG-2-Tanpa-Kelaparan
+│
+├── data
+│   └── food_loss.csv
+│
+├── src
+│   ├── spark_session.py
+│   ├── read_data.py
+│   ├── bronze_layer.py
+│   ├── silver_layer.py
+│   ├── gold_layer.py
+│   └── test_write.py
+│
+├── lakehouse
+│   ├── bronze
+│   │   ├── bronze_food_loss.parquet
+│   │   └── food_loss/
+│   │
+│   ├── silver
+│   │   ├── silver_food_loss.parquet
+│   │   └── food_loss/
+│   │
+│   └── gold
+│       ├── csv
+│       │   ├── food_loss_by_country.csv
+│       │   ├── food_loss_by_region.csv
+│       │   ├── food_loss_by_commodity.csv
+│       │   ├── food_loss_by_stage.csv
+│       │   ├── food_loss_by_cause.csv
+│       │   └── food_loss_trend.csv
+│       │
+│       ├── food_loss_by_country
+│       ├── food_loss_by_region
+│       ├── food_loss_by_commodity
+│       ├── food_loss_by_stage
+│       ├── food_loss_by_cause
+│       ├── food_loss_summary
+│       └── food_loss_trend
+│
+└── README.md
+```
+
+### Keterangan Folder
+
+| Folder | Fungsi |
+|----------|----------|
+| data | Dataset mentah Food Loss Database FAO |
+| src | Source code pipeline ETL |
+| lakehouse/bronze | Data mentah hasil ingest |
+| lakehouse/silver | Data hasil cleaning dan validasi |
+| lakehouse/gold | Data agregasi siap analisis |
+| lakehouse/gold/csv | Output CSV untuk dashboard dan visualisasi |
 
 # 🥉 Bronze Layer (Raw Data)
 
