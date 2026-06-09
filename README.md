@@ -1,10 +1,7 @@
-# 📊 Food Loss Analytics Pipeline
+# 📊 Food Loss Lakehouse Pipeline
+### Analisis Tren Food Loss Lintas Negara Berdasarkan Komoditas dan Tahapan Rantai Pasok Pangan Menggunakan Medallion Architecture Berbasis Apache Spark
 
-### Implementasi Medallion Architecture untuk Analisis Food Loss Database FAO
-
-Repositori ini berisi implementasi Data Engineering Pipeline yang dirancang untuk mengelola, membersihkan, dan menganalisis data Food Loss Database dari Food and Agriculture Organization (FAO).
-
-Proyek ini berfokus pada pembangunan pipeline data menggunakan pendekatan Medallion Architecture (Bronze, Silver, Gold) untuk menghasilkan data yang terstruktur, berkualitas, dan siap digunakan dalam proses analisis maupun visualisasi.
+Repositori ini berisi implementasi pipeline Data Engineering berbasis **Medallion Architecture** untuk mengelola dan menganalisis **Food Loss Database FAO**. Proyek bertujuan membangun arsitektur data yang terstruktur melalui Bronze Layer, Silver Layer, dan Gold Layer sehingga menghasilkan data analitik yang siap digunakan untuk eksplorasi dan visualisasi.
 
 ---
 
@@ -17,158 +14,102 @@ Food loss merupakan salah satu tantangan utama dalam rantai pasok pangan global.
 - Keberlanjutan lingkungan
 - Pencapaian SDG 2: Zero Hunger
 
-Melalui proyek ini, data food loss dari berbagai negara dianalisis untuk mengidentifikasi pola kehilangan pangan berdasarkan wilayah, komoditas, tahapan rantai pasok, penyebab kehilangan, dan tren waktu.
+Melalui proyek ini dilakukan analisis food loss berdasarkan negara, wilayah, komoditas, tahapan rantai pasok, penyebab kehilangan, dan tren tahunan menggunakan pendekatan Data Lakehouse.
 
 ---
 
-# 🏗️ Arsitektur Sistem (Medallion Architecture)
+# 🏗️ Arsitektur Lakehouse (Medallion Architecture)
 
 ```text
 Food Loss Database (FAO)
             │
             ▼
-     🥉 Bronze Layer
-       (Raw Data)
+      🥉 Bronze Layer
+        Raw Data
             │
             ▼
-     🥈 Silver Layer
-     (Cleaned Data)
+      🥈 Silver Layer
+      Cleaned Data
             │
             ▼
-      🥇 Gold Layer
-   (Analytical Data)
+       🥇 Gold Layer
+      Analytical Data
             │
             ▼
-     📊 Dashboard & Insight
+      📊 Dashboard &
+         Insight
 ```
 
 ---
----
 
-# 📁 Struktur Repository
+# 🥉 Bronze Layer
 
-```text
-Kelompok-8-SDG-2-Tanpa-Kelaparan
-│
-├── data
-│   └── food_loss.csv
-│
-├── src
-│   ├── spark_session.py
-│   ├── read_data.py
-│   ├── bronze_layer.py
-│   ├── silver_layer.py
-│   ├── gold_layer.py
-│   └── test_write.py
-│
-├── lakehouse
-│   ├── bronze
-│   │   ├── bronze_food_loss.parquet
-│   │   └── food_loss/
-│   │
-│   ├── silver
-│   │   ├── silver_food_loss.parquet
-│   │   └── food_loss/
-│   │
-│   └── gold
-│       ├── csv
-│       │   ├── food_loss_by_country.csv
-│       │   ├── food_loss_by_region.csv
-│       │   ├── food_loss_by_commodity.csv
-│       │   ├── food_loss_by_stage.csv
-│       │   ├── food_loss_by_cause.csv
-│       │   └── food_loss_trend.csv
-│       │
-│       ├── food_loss_by_country
-│       ├── food_loss_by_region
-│       ├── food_loss_by_commodity
-│       ├── food_loss_by_stage
-│       ├── food_loss_by_cause
-│       ├── food_loss_summary
-│       └── food_loss_trend
-│
-└── README.md
-```
-
-### Keterangan Folder
-
-| Folder | Fungsi |
-|----------|----------|
-| data | Dataset mentah Food Loss Database FAO |
-| src | Source code pipeline ETL |
-| lakehouse/bronze | Data mentah hasil ingest |
-| lakehouse/silver | Data hasil cleaning dan validasi |
-| lakehouse/gold | Data agregasi siap analisis |
-| lakehouse/gold/csv | Output CSV untuk dashboard dan visualisasi |
-
-# 🥉 Bronze Layer (Raw Data)
-
-Bronze Layer berfungsi sebagai penyimpanan data mentah hasil ingest dari sumber data FAO.
+Bronze Layer berfungsi sebagai lapisan penyimpanan data mentah hasil ingest dari sumber data.
 
 ### Aktivitas
 
-- Membaca dataset CSV
-- Menambahkan metadata ingest
-- Menyimpan data dalam format Parquet
-- Menjaga integritas data asli
+- Membaca dataset Food Loss FAO
+- Menyimpan data mentah tanpa transformasi
+- Menjaga integritas data sumber
 
 ### Output
 
 ```text
-bronze_food_loss.parquet
+lakehouse/bronze/
 ```
 
 ---
 
-# 🥈 Silver Layer (Cleaned Data)
+# 🥈 Silver Layer
 
-Silver Layer berfungsi meningkatkan kualitas data melalui proses pembersihan dan validasi.
+Silver Layer bertanggung jawab terhadap peningkatan kualitas data.
 
 ### Aktivitas
 
-- Menghapus data duplikat
+- Menghapus duplikasi
 - Menangani missing values
-- Memvalidasi nilai loss percentage
+- Memvalidasi atribut numerik
 - Standarisasi atribut
-- Menyiapkan data untuk analisis
 
 ### Output
 
 ```text
-silver_food_loss.parquet
+lakehouse/silver/
 ```
 
 ---
 
-# 🥇 Gold Layer (Analytical Data)
+# 🥇 Gold Layer
 
 Gold Layer menghasilkan dataset analitik yang siap digunakan untuk eksplorasi data dan dashboard.
 
+### Analisis yang Dihasilkan
+
+- Food Loss by Country
+- Food Loss by Region
+- Food Loss by Commodity
+- Food Loss by Supply Chain Stage
+- Food Loss by Cause
+- Food Loss Trend
+
 ### Output
 
 ```text
-food_loss_by_country.csv
-food_loss_by_region.csv
-food_loss_by_commodity.csv
-food_loss_by_stage.csv
-food_loss_by_cause.csv
-food_loss_trend.csv
+lakehouse/gold/
 ```
 
 ---
 
-# 🎯 Tujuan Analitik & KPI
+# 🎯 Tujuan Analitik
 
-Pipeline ini dibangun untuk mendukung beberapa analisis utama terkait food loss global.
-
-| Analisis | Tujuan | KPI |
-|-----------|-----------|-----------|
-| Food Loss by Country | Membandingkan tingkat food loss antar negara | Average Loss Percentage |
-| Food Loss by Region | Membandingkan food loss antar wilayah | Average Loss Percentage |
-| Food Loss by Commodity | Mengidentifikasi komoditas paling rentan | Average Loss Percentage |
-| Supply Chain Analysis | Menentukan titik kritis kehilangan pangan | Average Loss Percentage |
-| Cause Analysis | Mengidentifikasi penyebab utama food loss | Average Loss Percentage |
-| Trend Analysis | Menganalisis perubahan food loss tahunan | Annual Average Loss |
+| Analisis | Tujuan |
+|-----------|-----------|
+| Food Loss by Country | Membandingkan tingkat kehilangan pangan antar negara |
+| Food Loss by Region | Membandingkan tingkat kehilangan pangan antar wilayah |
+| Food Loss by Commodity | Mengidentifikasi komoditas paling rentan |
+| Supply Chain Stage Analysis | Menentukan titik kritis kehilangan pangan |
+| Cause Analysis | Mengidentifikasi penyebab utama food loss |
+| Trend Analysis | Menganalisis tren food loss dari waktu ke waktu |
 
 ---
 
@@ -176,7 +117,7 @@ Pipeline ini dibangun untuk mendukung beberapa analisis utama terkait food loss 
 
 ## 🌎 Negara dengan Food Loss Tertinggi
 
-| Country | Avg Loss (%) |
+| Country | Average Loss (%) |
 |----------|----------|
 | Australia and New Zealand | 44.00 |
 | Haiti | 39.50 |
@@ -184,15 +125,11 @@ Pipeline ini dibangun untuk mendukung beberapa analisis utama terkait food loss 
 | Oman | 35.00 |
 | Saint Kitts and Nevis | 30.00 |
 
-### Insight
-
-Australia and New Zealand menunjukkan rata-rata food loss tertinggi sebesar 44%, diikuti Haiti sebesar 39,5%.
-
 ---
 
 ## 🌾 Komoditas dengan Food Loss Tertinggi
 
-| Commodity | Avg Loss (%) |
+| Commodity | Average Loss (%) |
 |----------|----------|
 | Snails, Fresh, Chilled | 50.00 |
 | Grapefruit Juice | 41.89 |
@@ -200,15 +137,11 @@ Australia and New Zealand menunjukkan rata-rata food loss tertinggi sebesar 44%,
 | Orange Juice | 40.30 |
 | Pineapple Juice | 40.02 |
 
-### Insight
-
-Produk olahan dan produk hewani memiliki tingkat kehilangan pangan yang relatif tinggi dibanding komoditas lainnya.
-
 ---
 
 ## 🚚 Tahapan Rantai Pasok dengan Food Loss Tertinggi
 
-| Supply Stage | Avg Loss (%) |
+| Stage | Average Loss (%) |
 |----------|----------|
 | Post-Harvest | 19.76 |
 | Households | 15.40 |
@@ -216,47 +149,15 @@ Produk olahan dan produk hewani memiliki tingkat kehilangan pangan yang relatif 
 | Export | 10.88 |
 | Food Services | 10.13 |
 
-### Insight
-
-Tahap Post-Harvest menjadi titik kritis utama kehilangan pangan.
-
 ---
 
 ## ⚠️ Penyebab Utama Food Loss
 
-| Cause | Avg Loss (%) |
+| Cause | Average Loss (%) |
 |----------|----------|
 | Losses in Marine Shipment | 55.00 |
 | Rejected Fruits | 50.00 |
-| Over-ripeness & Rotting | 50.00 |
-
-### Insight
-
-Transportasi dan penyimpanan menjadi faktor dominan penyebab kehilangan pangan.
-
----
-
-# ✨ Fitur Utama Arsitektur
-
-### Automated Data Cleaning
-
-Pembersihan data dilakukan secara otomatis melalui Silver Layer untuk menghasilkan dataset yang konsisten dan siap dianalisis.
-
-### Medallion Architecture
-
-Pemisahan data ke dalam Bronze, Silver, dan Gold Layer untuk meningkatkan kualitas dan keterlacakan data.
-
-### Parquet-Based Storage
-
-Format penyimpanan yang efisien untuk proses ETL dan analitik.
-
-### Dashboard Ready Dataset
-
-Output Gold Layer dapat langsung digunakan pada Power BI maupun dashboard analitik lainnya.
-
-### Dockerized Environment
-
-Pipeline dijalankan dalam container Docker untuk memastikan reproducibility dan konsistensi lingkungan eksekusi.
+| Over-ripeness and Rotting | 50.00 |
 
 ---
 
@@ -264,39 +165,61 @@ Pipeline dijalankan dalam container Docker untuk memastikan reproducibility dan 
 
 | Komponen | Teknologi |
 |-----------|-----------|
-| Data Processing | Python |
-| Data Manipulation | Pandas |
-| Containerization | Docker |
+| Data Processing | PySpark |
+| Big Data Framework | Apache Spark |
 | Storage Format | Parquet |
+| Data Architecture | Medallion Architecture |
 | Version Control | Git & GitHub |
 | Visualization | Power BI |
 
 ---
 
-# 🚀 Cara Menjalankan Pipeline
+# 📂 Struktur Repository
 
-### Menjalankan Docker
+```text
+Kelompok-8-SDG-2-Tanpa-Kelaparan
 
-```bash
-docker compose up -d
+├── README.md
+│
+├── proposal
+│   └── Proposal_Tubes_ABD.pdf
+│
+├── data
+│   └── food_loss.csv
+│
+├── lakehouse
+│   ├── bronze
+│   ├── silver
+│   └── gold
+│
+└── src
+    ├── read_data.py
+    ├── spark_session.py
+    ├── bronze_layer.py
+    ├── silver_layer.py
+    └── gold_layer.py
 ```
+
+---
+
+# 🚀 Cara Menjalankan Pipeline
 
 ### Bronze Layer
 
 ```bash
-python /app/bronze.py
+python src/bronze_layer.py
 ```
 
 ### Silver Layer
 
 ```bash
-python /app/silver.py
+python src/silver_layer.py
 ```
 
 ### Gold Layer
 
 ```bash
-python /app/gold.py
+python src/gold_layer.py
 ```
 
 ---
@@ -304,21 +227,23 @@ python /app/gold.py
 # 👥 Tim Pengembang
 
 ### Kelompok 8 – SDG 2 Tanpa Kelaparan
-Program Studi Sains Data – Institut Teknologi Sumatera (ITERA)
+Program Studi Sains Data
+Institut Teknologi Sumatera (ITERA)
 
-- Khoirul Muttoharoh — Lead Data Engineer
-- Nadya Ratu Anjani — Data Engineer
-- Erma Daniar Safitri — Data Engineer
-- Zahra Putri Salsabilla — Data Analyst
-- Vita Anggraini — Data Analyst
+- Khoirul Muttoharoh
+- Nadya Ratu Anjani
+- Erma Daniar Safitri
+- Zahra Putri Salsabilla
+- Vita Anggraini
 
 ---
 
 # 🎯 Luaran Proyek
 
-- Pipeline Medallion Architecture
-- Bronze Dataset
-- Silver Dataset
-- 6 Gold Analytical Tables
+- Implementasi Medallion Architecture
+- Bronze Layer Dataset
+- Silver Layer Dataset
+- Gold Layer Dataset
+- Analisis Food Loss Global
 - Dashboard Visualisasi Food Loss
 - Insight untuk mendukung SDG 2 Zero Hunger
